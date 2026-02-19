@@ -1,6 +1,4 @@
 //Dai'zjon Carney
-//cs140
-//Lab1
 #include <cstdio>
 #include <iostream>
 
