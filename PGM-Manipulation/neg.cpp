@@ -1,5 +1,4 @@
 //Dai'zjon Carney
-//cs140
 //This program takes a pgm file as input and outputs the negative of the file
 #include <cstdio>
 #include <iostream>
