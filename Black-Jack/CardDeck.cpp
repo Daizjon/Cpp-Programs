@@ -1,6 +1,4 @@
 //Dai'zjon Carney
-//cs140
-//Lab4
 //This file defines the CardDeck class functions
 #include "CardDeck.h"
 
