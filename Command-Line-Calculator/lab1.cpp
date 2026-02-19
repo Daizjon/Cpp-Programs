@@ -1,8 +1,5 @@
-//Lab 1A
-//COSC130
 //Lab synopsis
 //Dai'zjon Carney
-//8/30/2018
 #include <iostream>
 #include <string>
 using namespace std;
