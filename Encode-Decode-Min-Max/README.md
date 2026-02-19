@@ -1,11 +1,131 @@
-Prog1b" that reads a sequence of random integers from stdin. When the input has been exhausted, the program prints the number of integers read, their sum as well as the minimum and maximum values to stdout.
-<br />
-A program called "Prog1c" which does the same as "Prog1b". This time around, create a class called "stats" which has two public member functions, namely, "push(int)" and "print()". The main function instantiates a stats object, then enters into a loop reading integers from stdin which are passed to the stats object using the push function. When stdin has been exhausted, the print function summarizes the number statistics.
-<br />
-Write a program called "Prog1d" which can encode and decode ASCII text files, i.e., any file you can view and make sense of such as source code or an html file. Since the goal is not to prevent bad guys from reading your files, we take a simple approach based on systematic character shifting.
+# Stream Stats & Caesar Shift CLI (C++)
 
-Computers represent alphanumeric characters using what is called an ASCII code which is nothing more than a a unique 8-bit number. For example, newline '\n' is 10 (0x0A), space ' ' is 32 (0x20), digit '0' is 48 (0x30), letter 'A' is 65 (0x41) while letter 'a' is 97 (0x61) and so forth. (the Unix command "man 7 ascii" will show you all the encodings). Since alphanumeric characters are integer numbers, we can manipulate them. For example, 'a'+1 produces 'b' and 'a'+2 produces 'c'. We will use this idea to change all letters the same way. To keep things interesting, we will make sure lower case letters remain lower case and upper case letters remain upper case. We will not change white space, digits, and other characters. In order to this, you need to determine whether a character represents a letter and if so, whether it is lower or upper case. Use the library functions "isalpha", "islower", and "isupper" to get that job done. More about these below. The tricky bit is to ensure the encoding stays within the realm of lower and upper case letters. For example, 'z'+1 should be mapped to 'a', 'y'+4 should be mapped to 'c', and so forth. When you decode, you likewise need to ensure that 'a'-1 maps to 'z' and 'c'-4 maps to 'y'. This is not hard to do, but you need to be careful when you implement the cyclic mappings.
+## Overview
 
-How will the program know whether to encode or decode and how will it know which number to add or subtract to each letter? You tell it using command line arguments. The first is either "-encode" or "-decode". The second is an integer in the range 0-9.
+This folder contains three small C++ command-line programs:
 
-<br />
+- `stream-minmax-sum.cpp` — reads integers from `stdin` and prints count, sum, min, and max.
+- `stats-class-minmax.cpp` — same functionality as above, implemented using a `stats` class.
+- `caesar-shift-cli.cpp` — encodes or decodes ASCII text using a simple Caesar-style letter shift.
+
+These programs demonstrate:
+
+- Stream-based input (`stdin`)
+- Aggregation logic (min/max/sum/count)
+- Basic object-oriented design
+- Command-line argument parsing
+- Character arithmetic and cyclic mapping
+
+
+
+## Files
+
+- `stream-minmax-sum.cpp`
+- `stats-class-minmax.cpp`
+- `caesar-shift-cli.cpp`
+- `README.md`
+
+
+
+## Build
+
+Compile using `g++`:
+
+```bash
+g++ -std=c++11 -O2 -Wall -Wextra -o stream-minmax-sum stream-minmax-sum.cpp
+g++ -std=c++11 -O2 -Wall -Wextra -o stats-class-minmax stats-class-minmax.cpp
+g++ -std=c++11 -O2 -Wall -Wextra -o caesar-shift-cli caesar-shift-cli.cpp
+```
+
+
+
+## 1. stream-minmax-sum
+
+### Description
+
+Reads integers from standard input until EOF and prints:
+
+- `N`   — number of integers read
+- `sum` — total sum
+- `min` — smallest value
+- `max` — largest value
+
+### Example
+
+```bash
+echo "5 2 9 -1 3" | ./stream-minmax-sum
+```
+
+Output:
+
+```
+N = 5
+sum = 18
+min = -1
+max = 9
+```
+
+
+## 2. stats-class-minmax
+
+### Description
+
+Same functionality as `stream-minmax-sum`, but implemented using a `stats` class with:
+
+- `push(int)` — processes an integer
+- `print()` — prints summary statistics
+
+### Example
+
+```bash
+echo "5 2 9 -1 3" | ./stats-class-minmax
+```
+
+Output format is identical to `stream-minmax-sum`.
+
+
+
+## 3. caesar-shift-cli
+
+### Description
+
+Encodes or decodes ASCII text using a Caesar-style shift.
+
+- Only letters (`A–Z`, `a–z`) are shifted.
+- Case is preserved.
+- Wrap-around is enforced:
+  - `Z + 1 -> A`
+  - `z + 1 -> a`
+  - `A - 1 -> Z`
+- Non-letter characters (digits, punctuation, whitespace) are unchanged.
+- Shift value must be an integer between `0` and `9`.
+
+### Usage
+
+```bash
+./caesar-shift-cli -encode <shift>
+./caesar-shift-cli -decode <shift>
+```
+
+### Encode Example
+
+```bash
+echo "Hello World" | ./caesar-shift-cli -encode 3
+```
+
+### Decode Example
+
+```bash
+echo "Khoor Zruog" | ./caesar-shift-cli -decode 3
+```
+
+
+
+## Notes
+
+- These programs are CLI utilities designed for practice with:
+  - Input streams
+  - Basic aggregation logic
+  - Class structure
+  - Character arithmetic
+- Compiled binaries are not included in this repository.
