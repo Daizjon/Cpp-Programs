@@ -1,5 +1,3 @@
-//COSC 130
-//Extra credit
 //Dai'zjon Carney
 #include <cstdio>
 #include <fstream>
