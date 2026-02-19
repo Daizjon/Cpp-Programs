@@ -1,5 +1,3 @@
-//Dai'zjon Carney
-//cs140
 //This program takes in two numbers as its command line arguments, then writes a pgm file to standard output.
 #include <cstdio>
 #include <iostream>
