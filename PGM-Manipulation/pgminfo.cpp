@@ -1,5 +1,4 @@
 //Dai'zjon Carney
-//cs140
 //This program reads in pgm files and outputs their specifications in an organized manner. 
 #include <cstdio>
 #include <iostream>
