@@ -1,4 +1,3 @@
-//Lab 2
 //uses bitwise operators in order to edit binary values to solve a problem
 //Dai'zjon Carney
 #include <iostream>
