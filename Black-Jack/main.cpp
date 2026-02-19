@@ -1,6 +1,4 @@
 //Dai'zjon Carney
-//cs140
-//lab4
 //This file creates an interactive black jack game.
 
 #include "CardDeck.h"   // class definition for CardDeck used below
