@@ -1,11 +1,101 @@
- A disassembler takes binary, machine language code and converts it into text-based assembly language (the opposite of an assembler).
- 
- The Program will be given two required arguments and one optional argument.
+# RISC-V Disassembler (C++)
 
-First user argument: This argument specifies the input file, which is a binary file encoded in machine language.
+## Overview
 
-Second user argument: This argument specifies the output file, which will be a text file representing the assembly code for the given machine language. If the user specifies a dash (-) as the output file, then your code will write to stdout. NOTE: This is easier to implement than you think. stdout is a FILE * data type!
+This project implements a basic RISC-V disassembler in C++.  
+It reads a raw binary file containing 32-bit little-endian machine instructions and converts each instruction into human-readable assembly format.
 
-Third user argument: (optional to the user). The user can either specify a or x. The argument 'a' will tell your disassembler to make the register names the ABI register names (second column in the register table above). If the user specifies 'x', your disassembler will decode register names as a variation of x0 through x31 (see example output below). If the user does NOT specify a third argument, then you must assume ABI register names.
+The program supports two register naming conventions:
 
-The input file is simply a binary file that lists instructions. Each instruction is exactly 4 bytes and is in little-endian byte order. No other fields are present in the input file.
+- ABI register names (default): `zero`, `ra`, `sp`, `a0`, `t0`, etc.
+- x-register names: `x0`–`x31`
+
+
+
+## Features
+
+- Reads binary instruction streams (4 bytes per instruction)
+- Decodes RISC-V instruction fields using bit masking and shifting
+- Supports multiple instruction types:
+  - I-Type ALU (`addi`, `xori`, `ori`, `andi`, `slli`, `srli`, `srai`)
+  - R-Type (`add`, `sub`, `xor`, `sll`, `srl`, `sra`, `and`, `or`)
+  - Loads (`lb`, `lh`, `lw`, `ld`, `lwu`)
+  - Stores (`sb`, `sh`, `sw`, `sd`)
+  - `lui`
+  - `jalr`
+- Optional ABI or x-register output formatting
+- Outputs to file or stdout
+
+
+
+## Build
+
+Compile with:
+
+```bash
+g++ -std=c++11 -O2 -o disassembler riscv-disassembler.cpp
+```
+
+
+
+## Usage
+
+```bash
+./disassembler <input_binary> <output_file_or_dash> [a|x]
+```
+
+### Arguments
+
+- `<input_binary>`  
+  Binary file containing 32-bit RISC-V instructions (little-endian).
+
+- `<output_file_or_dash>`  
+  Output destination:
+  - `-` → write to stdout
+  - filename → write to file
+
+- `[a|x]` (optional)
+  - `a` → ABI register names (default)
+  - `x` → x-register format (`x0–x31`)
+
+
+
+## Examples
+
+Write decoded instructions to terminal using ABI registers:
+
+```bash
+./disassembler program.bin - a
+```
+
+Write to a file using default ABI registers:
+
+```bash
+./disassembler program.bin output.s
+```
+
+Use x-register format:
+
+```bash
+./disassembler program.bin output.s x
+```
+
+
+
+## Implementation Notes
+
+- Instructions are read in 4-byte chunks.
+- Opcode and funct3 fields are extracted using bitwise operations.
+- Register fields and immediates are decoded based on instruction type.
+- Unsupported or unrecognized instructions output `"invalid"`.
+- Supports both ABI register naming and raw `x` register formatting.
+
+
+
+## Technical Focus
+
+- Binary file parsing
+- Instruction decoding via bit manipulation
+- Assembly formatting logic
+- Register abstraction (ABI vs x-register)
+- Systems-level C++ programming
