@@ -1,6 +1,4 @@
 //Dai'zjon Carney
-//cs140
-//Lab1
 #include <iostream>
 #include <cstdio>
 using namespace std;
