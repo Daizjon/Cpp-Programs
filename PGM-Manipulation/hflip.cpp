@@ -1,5 +1,4 @@
 //Dai'zjon Carney
-//cs140
 //This program reads in a pgm file and outputs it horizontal reflection
 #include <cstdio>
 #include <iostream>
