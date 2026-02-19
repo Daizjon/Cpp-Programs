@@ -1,5 +1,5 @@
 //Dai'zjon Carney:
-//Bit Matrices / Lab 5 cs140
+//Bit Matrices
 //Description: This lab involves bit matrices and various functions to modify them.
 #include <iostream>
 #include <fstream>
