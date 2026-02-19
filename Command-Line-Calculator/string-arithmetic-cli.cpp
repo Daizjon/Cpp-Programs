@@ -1,4 +1,3 @@
-//Lab synopsis
 //Dai'zjon Carney
 #include <iostream>
 #include <string>
