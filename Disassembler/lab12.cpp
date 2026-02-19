@@ -1,7 +1,6 @@
 //COSC 130
 //Extra credit
 //Dai'zjon Carney
-//3/15/2019
 #include <cstdio>
 #include <fstream>
 using namespace std;
