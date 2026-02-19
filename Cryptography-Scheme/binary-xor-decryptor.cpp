@@ -1,5 +1,3 @@
-//lab6.cpp
-//COSC130
 //Dai'zjon Carney
 //This program reads an encrypted file, decrypts it, and prints the contents to the screen.
 #include <cstdio>
