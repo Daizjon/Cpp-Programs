@@ -1,23 +1,184 @@
-This has four cpp files. <br />
-**pgminfo:**
-Your first PGM program should take a PGM file on standard input and report the number of rows, the number of columns, the total number of pixels, and the average value of all the pixels, padded to three decimal places. Your program should work on all valid PGM files, and should print out an error (using cerr) on any invalid PGM file. Examples of invalid PGM files are:
-Those that don't begin with P2.
-Those that don't have non-negative integers after the P2.
-Those that don't have the number 255 after the number of rows and columns.
-Those that contain the wrong number of pixels after the P2. This includes having too many pixels.
-Those that contain pixels whose values are not numbers between 0 and 255.
-Example of how to run: UNIX> ./pgminfo < Red.pgm <br />
+# PGM Manipulation (P2 ASCII)
 
-**bigwhite:**
-his program takes two numbers as its command line arguments -- the number of rows and the number of columns. It then writes a PGM file on standard output which contains that number of rows and columns, all of white pixels. Again, you should error check to make sure that the proper number of command line arguments are given, that they are integers and in the proper range. On an error, print the error statement to stderr.
-Example: UNIX> ./bigwhite 20 10 > a.pgm
-This will create a PGM file a.pgm, which has 20 rows and 10 columns of white pixels.
-<br />
+This folder contains C++ programs for generating, inspecting, and transforming **P2 (ASCII) PGM grayscale images**.
 
-**neg:**
-Neg takes a PGM file on standard input, and prints a PGM file on standard output that is the negative of the input file. If the PGM file is not valid (same parameters as pgminfo), print an error to standard error.
-<br />
+All programs use standard input/output and perform validation on PGM structure where applicable.
 
-**hflip:**
-Hflip reads a PGM file on standard input, and prints a PGM file on standard output. The output file should be the horizontal reflection of the input file -- in other words, left is right and right is left.
-You'll have to use a vector for this program.
+
+
+## What is a P2 PGM?
+
+A P2 PGM file is a plain-text grayscale image format with this structure:
+
+```
+P2
+<columns> <rows>
+255
+<pixel values...>
+```
+
+- `P2` → ASCII grayscale format
+- `<columns> <rows>` → image dimensions
+- `255` → maximum pixel value
+- Followed by `rows × columns` pixel values in range `0–255`
+
+
+
+## Files
+
+- `pgminfo.cpp` — validate and print image statistics
+- `bigwhite.cpp` — generate an all-white PGM
+- `neg.cpp` — output the negative of a PGM
+- `hflip.cpp` — output a horizontal reflection of a PGM
+- `Makefile` (if present)
+
+
+
+## Build
+
+Using g++:
+
+```bash
+g++ -std=c++17 -O2 -Wall -Wextra -o pgminfo pgminfo.cpp
+g++ -std=c++17 -O2 -Wall -Wextra -o bigwhite bigwhite.cpp
+g++ -std=c++17 -O2 -Wall -Wextra -o neg neg.cpp
+g++ -std=c++17 -O2 -Wall -Wextra -o hflip hflip.cpp
+```
+
+Or if a Makefile exists:
+
+```bash
+make
+```
+
+
+
+## 1. pgminfo
+
+Reads a P2 PGM from `stdin`, validates it, and prints:
+
+- Number of rows
+- Number of columns
+- Total pixel count
+- Average pixel value (3 decimal places)
+
+### Usage
+
+```bash
+./pgminfo < image.pgm
+```
+
+### Example Output
+
+```
+# Rows:        20
+# Columns:     10
+# Pixels:      200
+Avg Pixel:    127.350
+```
+
+### Validation Checks
+
+- First token must be `P2`
+- Columns and rows must be integers ≥ 1
+- Max value must be `255`
+- Exactly `rows × columns` pixels must follow
+- Each pixel must be between `0` and `255`
+- No extra tokens allowed after pixel data
+
+Errors are printed to `stderr`.
+
+
+
+## 2. bigwhite
+
+Generates an all-white P2 image (pixel value `255`).
+
+### Usage
+
+```bash
+./bigwhite <rows> <cols> > output.pgm
+```
+
+### Example
+
+```bash
+./bigwhite 20 10 > white.pgm
+```
+
+Produces a 20×10 white image.
+
+### Notes
+
+- Requires exactly 2 arguments
+- Both must be integers ≥ 1
+- On invalid input, prints:
+  ```
+  usage: bigwhite rows cols
+  ```
+  to `stderr`
+
+
+
+## 3. neg
+
+Reads a P2 PGM from `stdin` and prints its **negative** to `stdout`.
+
+Negative transformation:
+```
+new_pixel = 255 - original_pixel
+```
+
+### Usage
+
+```bash
+./neg < image.pgm > negative.pgm
+```
+
+Validation rules are the same as `pgminfo`.
+
+
+
+## 4. hflip
+
+Reads a P2 PGM from `stdin` and prints a **horizontal reflection** (left ↔ right).
+
+Each row’s pixels are reversed before printing.
+
+### Usage
+
+```bash
+./hflip < image.pgm > flipped.pgm
+```
+
+Validation rules are the same as `pgminfo`.
+
+
+
+## Example Workflow
+
+```bash
+# Generate white image
+./bigwhite 5 5 > white.pgm
+
+# Inspect image
+./pgminfo < white.pgm
+
+# Create negative
+./neg < white.pgm > black.pgm
+
+# Flip image
+./hflip < white.pgm > flipped.pgm
+```
+
+
+
+## Summary
+
+These programs demonstrate:
+
+- Structured file parsing
+- Input validation with error reporting
+- Vector-based pixel storage
+- Image transformations (negative, horizontal reflection)
+- Command-line utilities using stdin/stdout
