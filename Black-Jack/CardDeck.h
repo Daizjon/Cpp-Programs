@@ -1,5 +1,4 @@
 //Dai'zjon Carney
-//cs140
 //This defines the card deck class which stores the cards as a vector and setups a game of blackjack
 #ifndef CardDeck_H
 #define CardDeck_H
