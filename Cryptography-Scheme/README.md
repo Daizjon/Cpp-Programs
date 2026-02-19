@@ -1,23 +1,132 @@
-**Reads in a binary file, decoding its contents, and printing the decoded text onto the screen.**
-Instructions; have all the files in the same destination (msg0.enc, msg0.plain, msg0.key, lab5.cpp)
-The dkey for msg0.enc is B and the nkey is 127.
+# Binary XOR Decryptor (C++)
 
-**To run:**
-./lab5 msg0.enc B 127
+## Overview
 
-this outputs the correct decrpyted code.
-however If you input the wrong dkey or nkey such as  ./lab5 msg0.enc C 127  
-then the code wont be decrpyted correctly.
+This program reads an encrypted binary file, decrypts it using two keys, reconstructs the original message, and prints the decoded text to standard output.
+
+The encryption scheme operates block-by-block using XOR operations and shuffled byte indexing.
 
 
-**More background:**
-The binary files are encrypted by using two keys: a dkey (data key) and an nkey (index key). These two keys must match what was used to encrypt the files in order to decrypt the data.
-The data key is exactly 8 bits and the index key is exactly 32 bits, and they will be supplied as the second command line argument and third command line argument, respectively. The first command line argument is the name of the encrypted file. 
 
-The encryption scheme encrypts the data, byte-by-byte, then it shuffles where the bytes are located within the file. This means to decrypt the file, you must decrypt the data using the dkey and then locate the next block to decrypt using the nkey.
-Each block in the encrypted file is exactly 8 bytes. The first byte is the actual data and the last 4 bytes is the index that data belongs to. The middle three bytes are called "padding" and are not used. You must ignore these bytes.
+## File Structure
 
-When you read the first block, you will get an encrypted data byte and an encrypted index (4 bytes). To decrypt the data byte, you must XOR the encrypted data byte with the dkey. To decrypt the index, you must XOR the encrypted index with the nkey.
-Now, you should have a decrypted data byte and a decrypted index. For example, say the decrypted byte is 'B' and the decrypted index is 4. This means that all_data[4] = 'B'. In other words, the index describes a 0-based index into a full size data array. For a properly encrypted file, all indices will be represented somewhere within the file. However, you must still error check to ensure decryption is successful. If something does not decrypt within sane bounds, you must let the user know.
+```
+binary-xor-decryptor.cpp
+msg0.enc      (encrypted binary file)
+msg0.key      (contains dkey and nkey)
+msg0.plain    (expected decrypted output)
+README.md
+```
 
-You will continue to decrypt block-by-block until all blocks have been decrypted. Afterward, you will have an array of characters, which contains the data you need to print to the screen.
+
+
+## Build
+
+```bash
+g++ -std=c++11 -O2 -Wall -Wextra -o decrypt binary-xor-decryptor.cpp
+```
+
+
+
+## Run
+
+```bash
+./decrypt <encrypted_file> <dkey> <nkey>
+```
+
+### Example
+
+```bash
+./decrypt msg0.enc B 127
+```
+
+Output:
+
+```
+Hello
+```
+
+
+
+## Encryption Scheme Description
+
+Each encrypted file is composed of 8-byte blocks.
+
+Each block contains:
+
+- 1 byte → Encrypted data
+- 3 bytes → Padding (ignored)
+- 4 bytes → Encrypted index (integer)
+
+
+
+## Decryption Process
+
+For each block:
+
+1. Read encrypted data byte
+2. Skip 3 padding bytes
+3. Read encrypted 4-byte index
+4. Decrypt:
+   - `data ^= dkey`
+   - `index ^= nkey`
+5. Place decrypted data into the output array at position `index`
+
+After all blocks are processed, the reconstructed character array is printed.
+
+
+
+## Keys
+
+Two keys are required:
+
+- **dkey (Data Key)** — 1 byte (char)
+- **nkey (Index Key)** — 32-bit integer
+
+Example from `msg0.key`:
+
+```
+B 127
+```
+
+- dkey = 'B'
+- nkey = 127
+
+Both keys must match those used during encryption.
+
+
+
+## Error Handling
+
+The program checks:
+
+- Incorrect number of arguments
+- Failure to open file
+- Index out of bounds
+
+If an index is invalid, the program prints:
+
+```
+error, index is out of bounds
+```
+
+
+
+## Concepts Demonstrated
+
+- Binary file I/O (`fopen`, `fread`, `fseek`)
+- XOR-based encryption/decryption
+- Block-based file parsing
+- Manual memory allocation (`new[]`, `delete[]`)
+- Index-based message reconstruction
+- Command-line argument parsing
+
+
+
+## Notes
+
+- File size must be divisible by 8
+- Padding bytes are ignored
+- The output is reconstructed using decrypted indices
+- Designed to demonstrate low-level binary parsing and symmetric XOR encryption
+
