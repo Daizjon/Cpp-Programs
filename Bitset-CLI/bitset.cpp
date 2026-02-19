@@ -1,7 +1,6 @@
 //Lab 2
 //uses bitwise operators in order to edit binary values to solve a problem
 //Dai'zjon Carney
-//1/25/2019
 #include <iostream>
 #include <vector>
 #include <string>
