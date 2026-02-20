@@ -1,5 +1,4 @@
 //Dai'zjon Carney
-//lab 1
 //This lab takes tic tac toe input and determines the winner
 #include <iostream>
 #include <cstdio>
