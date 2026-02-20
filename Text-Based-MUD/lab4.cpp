@@ -1,7 +1,4 @@
-//lab5.cpp
-//COSC130
 //Dai'zjon Carney
-//2/15/19
 //This program lets the user play a Multi-User Dungeon through entering simple commands.
 #include <cstdio>
 #include <cstring>
