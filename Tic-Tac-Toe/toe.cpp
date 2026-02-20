@@ -1,5 +1,4 @@
 //Dai'zjon Carney
-//Lab 1
 //This lab creates an interactive tic tac toe game
 //user enters coordinates and their marker will be placed
 #include <iostream>
